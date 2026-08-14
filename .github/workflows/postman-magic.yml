@@ -16,7 +16,8 @@ on:
       - master
     paths:
       - .github/workflows/postman-magic.yml
-      - scrape.mjs
+      - scrape-fixed.mjs
+      - polish.mjs
       - package.json
 
 permissions:
@@ -47,6 +48,9 @@ jobs:
 
       - name: Scrape Postman and build OpenAPI + Scalar
         run: npm run scrape
+
+      - name: Polish OpenAPI and redact example secrets
+        run: node polish.mjs
 
       - name: Package output
         if: always()
