@@ -18,6 +18,7 @@ on:
       - .github/workflows/postman-magic.yml
       - scrape-fixed.mjs
       - polish.mjs
+      - finalize.mjs
       - package.json
 
 permissions:
@@ -51,6 +52,9 @@ jobs:
 
       - name: Polish OpenAPI and redact example secrets
         run: node polish.mjs
+
+      - name: Remove raw sensitive diagnostics
+        run: node finalize.mjs
 
       - name: Package output
         if: always()
