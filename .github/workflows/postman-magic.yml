@@ -1,0 +1,61 @@
+name: Postman Documenter → OpenAPI + Scalar
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_url:
+        description: Public Postman Documenter URL
+        required: true
+        default: https://documenter.getpostman.com/view/3616447/SVn2PvjX
+      title:
+        description: API title fallback
+        required: true
+        default: RocketLink API v1
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SOURCE_URL: ${{ inputs.source_url }}
+      API_TITLE: ${{ inputs.title }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Scrape Postman and build OpenAPI + Scalar
+        run: npm run scrape
+
+      - name: Package output
+        if: always()
+        run: |
+          if [ -d generated ]; then
+            zip -9 -r postman-magic-output.zip generated
+          fi
+
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-magic-output
+          path: |
+            generated/
+            postman-magic-output.zip
+          if-no-files-found: warn
+          retention-days: 30
