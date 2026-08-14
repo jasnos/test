@@ -1,5 +1,6 @@
 {
   "name": "postman-magic",
+  "description": "Recover Postman Documenter into OpenAPI 3.1 and Scalar documentation",
   "private": true,
   "type": "module",
   "scripts": {
