@@ -1,0 +1,12 @@
+{
+  "name": "postman-magic",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrape": "node scrape.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.54.2",
+    "yaml": "^2.8.1"
+  }
+}
