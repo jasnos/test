@@ -11,6 +11,13 @@ on:
         description: API title fallback
         required: true
         default: RocketLink API v1
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/postman-magic.yml
+      - scrape.mjs
+      - package.json
 
 permissions:
   contents: read
